@@ -164,3 +164,32 @@ def create_table(tablename):
         con.commit()
         cursor.close()
         con.close()
+
+
+def add_image(filename):
+    file_path = "src/images/" + filename
+    blob = psycopg2.Binary(open(file_path, "rb").read())
+    query = sql.SQL(
+        "INSERT INTO blob_datastore (filename, blob_data) VALUES (%(filename)s, %(blob)s)"
+    )
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query, {"filename": filename, "blob": blob})
+        con.commit()
+        cursor.close()
+        con.close()
+
+
+def retrieve_image(filename):
+    query = sql.SQL(
+        "SELECT blob_data FROM blob_datastore WHERE filename = %(filename)s"
+    )
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query, {"filename": filename})
+        blob = cursor.fetchone()[0]
+        open("src/images/new" + filename, "wb").write(blob)
+        cursor.close()
+        con.close()
