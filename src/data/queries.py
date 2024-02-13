@@ -126,3 +126,13 @@ def delete_person(id):
         con.commit()
         cursor.close()
         con.close()
+
+def delete_certificate(id):
+    query = sql.SQL("DELETE FROM certificates WHERE id = %(id)s")
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query, {'id': id})
+        con.commit()
+        cursor.close()
+        con.close()
