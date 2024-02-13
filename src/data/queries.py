@@ -57,3 +57,18 @@ def get_average_age_from_person():
     query = """SELECT AVG(age) from person"""
     averag_age = round(query_data(query, "one")[0], 2)
     print(f"The average age of persons is {averag_age}")
+
+
+def get_certificate_holders(certificate):
+    query = sql.SQL(
+        "SELECT person.name FROM certificates INNER JOIN person ON certificates.person_id = person.id WHERE certificates.name = %s"
+    )
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query, (certificate,))
+        row = cursor.fetchall()
+        for r in row:
+            print(r[0])
+        cursor.close()
+        con.close()
