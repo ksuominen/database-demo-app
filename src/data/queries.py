@@ -31,3 +31,16 @@ def all_rows_from_person():
     row = query_data(sql, "all")
     for r in row:
         print(r)
+
+
+def column_names_from_person():
+    sql = """SELECT * FROM person;"""
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(sql)
+        col_names = [desc[0] for desc in cursor.description]
+        for c in col_names:
+            print(c)
+        cursor.close()
+        con.close()
