@@ -12,11 +12,11 @@ def connect():
         print(error)
 
 
-def query_data(sql, how):
+def query_data(query, how):
     con = connect()
     if con is not None:
         cursor = con.cursor()
-        cursor.execute(sql)
+        cursor.execute(query)
         if how == "one":
             row = cursor.fetchone()
         elif how == "all":
@@ -53,4 +53,7 @@ def rows_and_column_names_from_table(table):
     all_rows_from_table(table)
 
 
-rows_and_column_names_from_table("certificates")
+def get_average_age_from_person():
+    query = """SELECT AVG(age) from person"""
+    averag_age = round(query_data(query, "one")[0], 2)
+    print(f"The average age of persons is {averag_age}")
