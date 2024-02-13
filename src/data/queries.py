@@ -75,44 +75,58 @@ def get_certificate_holders(certificate):
 
 
 def add_certificate(name, certificate):
-    query = sql.SQL("INSERT INTO certificates (name, person_id) VALUES (%(certificate)s, (SELECT id FROM person WHERE person.name=%(name)s))")
+    query = sql.SQL(
+        "INSERT INTO certificates (name, person_id) VALUES (%(certificate)s, (SELECT id FROM person WHERE person.name=%(name)s))"
+    )
     con = connect()
     if con is not None:
         cursor = con.cursor()
-        cursor.execute(query, {'certificate': certificate, 'name': name})
+        cursor.execute(query, {"certificate": certificate, "name": name})
         con.commit()
         cursor.close()
         con.close()
+
 
 def add_person(name, age, student):
-    query = sql.SQL("INSERT INTO person (name, age, student) VALUES (%(name)s, %(age)s, %(student)s)")
+    query = sql.SQL(
+        "INSERT INTO person (name, age, student) VALUES (%(name)s, %(age)s, %(student)s)"
+    )
     con = connect()
     if con is not None:
         cursor = con.cursor()
-        cursor.execute(query, {'name': name, 'age': age, 'student':student})
+        cursor.execute(query, {"name": name, "age": age, "student": student})
         con.commit()
         cursor.close()
         con.close()
+
 
 def update_person(name, age, student):
-    query = sql.SQL("UPDATE person SET age = %(age)s, student = %(student)s WHERE name = %(name)s")
+    query = sql.SQL(
+        "UPDATE person SET age = %(age)s, student = %(student)s WHERE name = %(name)s"
+    )
     con = connect()
     if con is not None:
         cursor = con.cursor()
-        cursor.execute(query, {'name': name, 'age': age, 'student':student})
+        cursor.execute(query, {"name": name, "age": age, "student": student})
         con.commit()
         cursor.close()
         con.close()
 
+
 def update_certificates(id, certificate, person_id):
-    query = sql.SQL("UPDATE certificates SET name = %(certificate)s, person_id = %(person_id)s WHERE id = %(id)s")
+    query = sql.SQL(
+        "UPDATE certificates SET name = %(certificate)s, person_id = %(person_id)s WHERE id = %(id)s"
+    )
     con = connect()
     if con is not None:
         cursor = con.cursor()
-        cursor.execute(query, {'certificate': certificate, 'person_id': person_id, 'id': id})
+        cursor.execute(
+            query, {"certificate": certificate, "person_id": person_id, "id": id}
+        )
         con.commit()
         cursor.close()
         con.close()
+
 
 def delete_person(id):
     query1 = sql.SQL("DELETE FROM certificates WHERE person_id = %(person_id)s")
@@ -120,19 +134,33 @@ def delete_person(id):
     con = connect()
     if con is not None:
         cursor = con.cursor()
-        cursor.execute(query1, {'person_id': id})
+        cursor.execute(query1, {"person_id": id})
         con.commit()
-        cursor.execute(query2, {'id': id})
+        cursor.execute(query2, {"id": id})
         con.commit()
         cursor.close()
         con.close()
+
 
 def delete_certificate(id):
     query = sql.SQL("DELETE FROM certificates WHERE id = %(id)s")
     con = connect()
     if con is not None:
         cursor = con.cursor()
-        cursor.execute(query, {'id': id})
+        cursor.execute(query, {"id": id})
+        con.commit()
+        cursor.close()
+        con.close()
+
+
+def create_table(tablename):
+    query = sql.SQL(
+        "CREATE TABLE {tablename} (id SERIAL PRIMARY KEY, name varchar(255))"
+    ).format(tablename=sql.Identifier(tablename))
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query)
         con.commit()
         cursor.close()
         con.close()
