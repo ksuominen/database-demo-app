@@ -72,3 +72,15 @@ def get_certificate_holders(certificate):
             print(r[0])
         cursor.close()
         con.close()
+
+
+def add_certificate(name, certificate):
+    query = sql.SQL("INSERT INTO certificates (name, person_id) VALUES (%(certificate)s, (SELECT id FROM person WHERE person.name=%(name)s))")
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query, {'certificate': certificate, 'name': name})
+        con.commit()
+        cursor.close()
+        con.close()
+
