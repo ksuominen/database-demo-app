@@ -93,3 +93,13 @@ def add_person(name, age, student):
         con.commit()
         cursor.close()
         con.close()
+
+def update_person(name, age, student):
+    query = sql.SQL("UPDATE person SET age = %(age)s, student = %(student)s WHERE name = %(name)s")
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query, {'name': name, 'age': age, 'student':student})
+        con.commit()
+        cursor.close()
+        con.close()
