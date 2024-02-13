@@ -7,7 +7,6 @@ def connect():
     con = None
     try:
         con = psycopg2.connect(**config())
-        print("Connected to the PostgreSQL server.")
         return con
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -47,4 +46,11 @@ def column_names_from_table(table):
         con.close()
 
 
-column_names_from_table("person")
+def rows_and_column_names_from_table(table):
+    print(f"Column names of table {table}")
+    column_names_from_table(table)
+    print(f"Rows of table {table}")
+    all_rows_from_table(table)
+
+
+rows_and_column_names_from_table("certificates")
