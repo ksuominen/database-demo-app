@@ -84,3 +84,12 @@ def add_certificate(name, certificate):
         cursor.close()
         con.close()
 
+def add_person(name, age, student):
+    query = sql.SQL("INSERT INTO person (name, age, student) VALUES (%(name)s, %(age)s, %(student)s)")
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query, {'name': name, 'age': age, 'student':student})
+        con.commit()
+        cursor.close()
+        con.close()
