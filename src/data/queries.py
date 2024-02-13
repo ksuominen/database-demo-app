@@ -103,3 +103,13 @@ def update_person(name, age, student):
         con.commit()
         cursor.close()
         con.close()
+
+def update_certificates(id, certificate, person_id):
+    query = sql.SQL("UPDATE certificates SET name = %(certificate)s, person_id = %(person_id)s WHERE id = %(id)s")
+    con = connect()
+    if con is not None:
+        cursor = con.cursor()
+        cursor.execute(query, {'certificate': certificate, 'person_id': person_id, 'id': id})
+        con.commit()
+        cursor.close()
+        con.close()
